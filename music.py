@@ -35,7 +35,6 @@ mixer.init()
 
 Label(root, text="MUSIC PLAYER", font=("arial", 20 ,"bold")).place(x=330, y=20)
 
-
 play_button = PhotoImage(file="play.png")
 Button(root, image=play_button, bg="#0f1a2b", bd=0, command=play_song, cursor="hand2").place(x=300, y=200)
 
@@ -51,7 +50,7 @@ music.place(x=430, y=130, anchor="center")
 
 
 music_frame = Frame(root, bd=2)
-music_frame.place(x=10, y=350, width=890, height=250)
+music_frame.place(x=20, y=350, width=890, height=250)
 
 Button(
     root,
@@ -63,7 +62,7 @@ Button(
     bg="#21b3de",
     command=open_folder,
     cursor="hand2"
-).place(x=45, y=300)
+).place(x=20, y=300)
 
 
 scroll = Scrollbar(music_frame)
