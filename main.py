@@ -1,5 +1,3 @@
-
-
 import smtplib
 import platform
 import iconsbase64
@@ -34,8 +32,6 @@ leftFrameColor = '#d0d0d0'
 textColor = '#181825'
 rightCONTENTFramecolor = 'grey'
 rightCONTENTFrametxtcolor = 'white'
-
-#Global Variables Declaration
 songsdir,songname,filefound, = "","",""
 global pausedornot, Mute, song_len, checksong, slide, pas, tl
 checksong,slide,tl = "","",""
@@ -56,7 +52,6 @@ y = int((screen_height/2) - (height/2))
 
 windows.geometry("{}x{}+{}+{}".format(width, height, x, y))
 windows.config(bg='#A9A9A9')
-#root.resizable(False, False)
 background = Label(windows, borderwidth=0)
 background.place(x=0,y=0)
 
@@ -114,23 +109,20 @@ def getsongINFO():
     global song_len
     song_len = song_load.info.length
     
-
     def gettime():
         currentTIME = pygame.mixer.music.get_pos() / 1000
         ctyme = time.strftime('%M:%S', time.gmtime(currentTIME))
         styme = time.strftime('%M:%S', time.gmtime(song_len))
-        #currentTIME+=1
+
         if int(progressBar1.get() == int(song_len)):
             progressBar.config(text=styme)
             foreward()
         elif pausedornot:
             pass
         elif int(progressBar1.get()) == int(currentTIME):
-            #no movement to the slider
             sliderPOS = int(song_len)
             progressBar1.config(to=sliderPOS, value=int(currentTIME))
         else:
-            #slider moved
             sliderPOS = int(song_len)
             progressBar1.config(to=sliderPOS, value=int(progressBar1.get()))
             ctyme = time.strftime('%M:%S', time.gmtime(int(progressBar1.get())))
@@ -138,9 +130,7 @@ def getsongINFO():
             progressBar.config(text=ctyme)
             nextt = int(progressBar1.get()) + 1
             progressBar1.config(value=nextt)
-        #progressBar.config(text=f'Time Elapsed: {ctyme} of {styme}')
-        #progressBar1.config(value=int(currentTIME)) #UPDATE SLIDER
-        
+
         progressBar.after(1000, gettime)
     if pas == False:
         gettime()
@@ -148,7 +138,6 @@ def getsongINFO():
     else:
         pass
     
-
 def nextinfo(info):
     if info == None:
         artistlbl.config(text='Artist: N/A')
@@ -177,16 +166,12 @@ def nextinfo(info):
 
 def slider(x):
     global slide
-    '''activeClick = musiclist.get(ACTIVE)
-    activeClick = activeClick.replace('       ','')
-    song = os.path.join(songsdir, activeClick)'''
     try:
         pygame.mixer.music.load(slide)
         pygame.mixer.music.play(loops=0, start=int(progressBar1.get()))
     except:
         pass
-    #sliderLBL.config(text=f'{int(progressBar1.get())} of {int(song_len)}')
-
+    
 def volume(percent):
     pygame.mixer.music.set_volume(volumeSlider.get())
     vol = pygame.mixer.music.get_volume() * 100
@@ -254,7 +239,6 @@ def getalbumArt(art, nextart):
 
     path2 = os.path.join(workinfFolder, image2)
     BGPath = os.path.join(workinfFolder, backgroundIMG)
-    # For Current Album Art
     try:
         metadata=audio_metadata.load(art)
         artwork = metadata.pictures[0].data
@@ -291,7 +275,6 @@ def getalbumArt(art, nextart):
         nowplayingLabel = Label(nowplayingIMG, height=230, width=230, image=imgg, borderwidth=0)
         nowplayingLabel.img = imgg
         nowplayingLabel.place(x=0,y=0)
-    #For next album Art
     if nextart == None:
         for things in cunextpic.winfo_children():
                 things.destroy()
@@ -321,7 +304,6 @@ def getalbumArt(art, nextart):
             cunextpicLabel.img = imgg1
             cunextpicLabel.place(x=0,y=0)
     
-
 def addlibFolder():
     global songsdir,musiclist,filefound
     songsdir = filedialog.askdirectory()
@@ -342,7 +324,6 @@ def addlibFolder():
     for song in songs:
         musiclist.config(font=('AdobeClean-REGULAR', 10))
         musiclist.insert(END, f'       {song}')
-    #musiclist.config(height=36, width=77)
     musiclist.config(height=25, width=77)
     
 def addSongs():
@@ -406,11 +387,8 @@ def play(check):
             playBTN.img = icon2
             checksong = song
             pausedornot = False
-            #Reset Progress Slider
             progressBar1.config(value=0)
             getsongINFO()
-            #sliderPOS = int(song_len)
-            #progressBar1.config(to=sliderPOS, value=0)
         except:
             pass
     elif checksong == song:
@@ -442,7 +420,6 @@ def foreward():
     iconnn = geticons(PLAY)
     playBTN.config(image=iconnn)
     playBTN.img = iconnn
-    #Get the next song number (Tuple Number)
     nextsong = musiclist.curselection()
     try:
         nextsong = nextsong[0]+1
@@ -462,7 +439,6 @@ def foreward():
     song = musiclist.get(nextsong)
     if song == "" or song == None:
         return
-    #Reset Progress Slider
     progressBar1.config(value=0)
 
     path = os.path.join(songsdir, song)
@@ -519,7 +495,6 @@ def previous():
 
 
     try:
-        #Reset Progress Slider
         progressBar1.config(value=0)
 
         pygame.mixer.music.load(path)
@@ -543,9 +518,7 @@ def previous():
 def removeSongs(typee):
     global Stop
     currentsong = musiclist.curselection()
-    #nextsong = currentsong[0]+1
     if typee == 'ONE':
-        #Reset Progress Slider
         progressBar1.config(value=0)
         musiclist.delete(currentsong)
         pygame.mixer.music.stop()
@@ -554,7 +527,6 @@ def removeSongs(typee):
         nextsong = 0
         Stop = True
     elif typee == 'ALL':
-        #Reset Progress Slider
         progressBar1.config(value=0)
         musiclist.delete(0, END)
         pygame.mixer.music.stop()
@@ -569,21 +541,17 @@ def aboutwindow():
     win.wm_title("MusicByte - About")
     screen_width = windows.winfo_screenwidth()
     screen_height = windows.winfo_screenheight()
-
     x = int((screen_width/2) - (width/2))
     y = int((screen_height/2) - (height/2))
-
     win.geometry("{}x{}+{}+{}".format(width, height, x, y))
     win.resizable(False, False)
     win.focus_set()
     mainico = geticons(MAIN)
     win.iconphoto(False, mainico)
-
     host = socket.gethostname()
     processor = platform.processor()
     System = f'{platform.system()}, {platform.version()}, {platform.architecture()[0]}'
     Machine = processor.split(',')
-
     infoframe = Frame(win, height=165, width=390)
     infoframe.place(x=45,y=15)
     lbl1 = Label(infoframe, text='MusicByte - Music Player', font=('AdobeClean-Bold', 13))
@@ -600,10 +568,8 @@ def aboutwindow():
     lbl4.place(x=30, y=120)
     lbl5 = Label(infoframe, text=f'Machine Type: {Machine[1]}')
     lbl5.place(x=30, y=140)
-
     line1 = Frame(win, height=1, width=397, highlightthickness=1, highlightbackground='black')
     line1.place(x=49, y=190)
-
     aboutframe = Frame(win, height=230, width=420)
     aboutframe.place(x=45, y=205)
     about = Label(aboutframe, text='MusicByte is a Stylish, Powerful and  Fast Music Player  with  elegant design. \n'\
@@ -682,32 +648,21 @@ def licenses():
     b = ttk.Button(win, text="Close", command=win.destroy)
     b.place(x=205, y=420)
 
-#END OF ALL FUNCTIONS
-
-#---------------------------------------------------Actual Designing Starts here---------------------------------------------------
-
-#APPLICATION MAIN ICON
 mainico = geticons(MAIN)
 windows.iconphoto(False, mainico)
-
-#RIGHT FRAME, MUSIC LIST
 rightFrame = Frame(root,height=600, width=620, bg='#fafafa')
 rightFrame.place(x=250, y=20)
-
-#RIGHTCONTENT FRAME, AFTER MUSIC LIST 
 imageee = geticons(RIGHT_FRAME)
 rightCONTENTFrame = Frame(root, height=620, width=250,bg=rightCONTENTFramecolor)
 rightCONTENTFrame.place(x=810, y=0)
 sha = Label(rightCONTENTFrame, height=620, width=250, image=imageee, borderwidth=0)
 sha.place(x=0,y=0)
-
 cunext = Frame(rightCONTENTFrame, height=30, width=200,bg='#0f51c9')
 cunext.place(x=23, y=10)
 cunextlbl = Label(cunext, text='Comming Up next',fg='white', bg='#0f51c9',font=('AdobeClean-Bold', 13))
 cunextlbl.place(x=25,y=0)
 cunextpic = Frame(rightCONTENTFrame, height=200, width=200, bg='#d0d0d0')
 cunextpic.place(x=23,y=40)
-
 detailsframe = Frame(rightCONTENTFrame, height=70, width=225, bg=rightCONTENTFramecolor)
 detailsframe.place(x=10, y=245)
 artistlbl = Label(detailsframe, text='Artist: ',bg=rightCONTENTFramecolor, fg=rightCONTENTFrametxtcolor)
@@ -717,33 +672,27 @@ lengthlbl.place(x=0, y=25)
 bitratelbl = Label(detailsframe, text='Bitrate: ',bg=rightCONTENTFramecolor, fg=rightCONTENTFrametxtcolor)
 bitratelbl.place(x=0, y=45)
 
-#MUSIC LIST DISPLAY BOX
 musicboxFRAME = Frame(root,height=500, width=560)
 musicboxFRAME.place(x=250,y=20)
 musiclist = Listbox(musicboxFRAME, height=27, width=90, borderwidth=0, bg='#f0f0f0')
 musiclist.pack(side='left', fill='y')
 scroll = Scrollbar(musicboxFRAME, orient='vertical')
 scroll.pack(side='right', fill='y')
-
-#LEFT FRAME-----------------------------------------------------------------------------------
 leftFrame = Frame(root, height=620, width=250, bg=leftFrameColor)#bg='#eeeeee'
 leftFrame.place(x=0,y=0)
 lftImg = geticons(LEFT_FRAME)
 lftframe = Label(leftFrame, height=700, width=250, image=lftImg, borderwidth=0)
 lftframe.place(x=0, y=0)
-#HEADING (PLAYER NAME)
 head = Frame(leftFrame, height=50, width=173,bg=leftFrameColor)
 head.place(x=35,y=15)
 pic = geticons(MUSICBYTE)
-headlbl = Label(head, image=pic, bg=leftFrameColor) #font=('CoolveticaRg-Regular', 25) text='MusicByte',
+headlbl = Label(head, image=pic, bg=leftFrameColor)
 headlbl.place(x=0,y=5)
-
-#MANAGEMENT i.e ADD SONGS AND ETC OPTIONS
 addlibrary = Frame(leftFrame, height=280, width=210, bg=leftFrameColor)
 addlibrary.place(x=10, y=70)
-text1 = Label(addlibrary, text="LIBRARY",font=('AdobeClean-Bold', 13), fg=textColor,bg=leftFrameColor) #HEADING: LIBRARY fg='#686868'
+text1 = Label(addlibrary, text="LIBRARY",font=('AdobeClean-Bold', 13), fg=textColor,bg=leftFrameColor)
 text1.place(x=10,y=5)
-text2 = Label(addlibrary, text="Music",font=('AdobeClean-REGULAR', 13), fg=textColor,bg=leftFrameColor) #SUBHEADINGS
+text2 = Label(addlibrary, text="Music",font=('AdobeClean-REGULAR', 13), fg=textColor,bg=leftFrameColor) 
 text2.place(x=55,y=40)
 musicico = geticons(MUSIC)
 musiclabel = Label(addlibrary, image=musicico, bg=leftFrameColor)
@@ -763,9 +712,6 @@ aboutbtn.place(x=55, y=210)
 licensebtn = Button(addlibrary, text='View License', font=('AdobeClean-REGULAR', 12), borderwidth=0, fg=textColor,bg=leftFrameColor, command=licenses)
 licensebtn.place(x=55, y=235)
 
-
-
-#NOW PLAYING
 nowplaying = Frame(leftFrame, height=260, width=230)
 nowplaying.place(x=10,y=350)
 nowtext = Frame(nowplaying,height=30,width=230,bg='#0f51c9')
@@ -775,11 +721,9 @@ nowlabel.place(x=50,y=0)
 nowplayingIMG = Frame(nowplaying, height=230, width=230, bg='gray')
 nowplayingIMG.place(x=0, y=30)
 
-#CONTROL FRAME (MAIN)-------------------------------------------------------------------------
 controlFRAME = Frame(root,height=100, width=560)
 controlFRAME.place(x=250,y=520)
 
-#Time FUNCTION
 sliderlength = Frame(controlFRAME, height=21, width=35)
 sliderlength.place(x=500, y=5)
 sliderlengthlbl = Label(sliderlength, text='00:00')
@@ -788,16 +732,11 @@ timeframe = Frame(controlFRAME, height=21, width=40)
 timeframe.place(x=20, y=7)
 progressBar = Label(timeframe, text="00:00", relief=GROOVE, anchor=E, borderwidth=0)
 progressBar.pack(fill=X, side=BOTTOM)
-
-
-#SLIDER FRAME
 sliderFrame = Frame(controlFRAME, height=21, width=350)
 sliderFrame.place(x=58, y=4)
 progressBar1 = ttk.Scale(sliderFrame, from_=0, to=100, orient=HORIZONTAL, value=0,length=432, command=slider)
 progressBar1.pack()
 
-
-#CONTROLS
 controlFrame1 = Frame(controlFRAME, height=48, width=140)
 controlFrame1.place(x=200,y=33)
 
@@ -814,7 +753,6 @@ backBTN.place(x=0,y=15)
 playBTN.place(x=45,y=0)
 forewardBTN.place(x=104,y=15)
 
-#NOW PLAYING SONG INFO------------------------------------------------------------------------
 songInfoframe = Frame(root, height=80, width=560)
 songInfoframe.place(x=250, y=448)
 songInfofr = Frame(songInfoframe, height=50, width=470)
@@ -832,25 +770,19 @@ song_info1.pack()
 songbitrate = Label(songInfofrbit, text="Bitrate: ")
 songbitrate.pack()
 
-#VOLUME CONTROLS------------------------------------------------------------------------------
-volFrame = Frame(controlFRAME, height=30, width=30)#bg=leftFrameColor)
+volFrame = Frame(controlFRAME, height=30, width=30)
 volFrame.place(x=20,y=42)
 
 global muteBTN
 icon6 = geticons(UNMUTE)
 muteBTN = Button(volFrame, image=icon6, borderwidth=0, command=lambda: mute(Mute))
 muteBTN.place(x=2,y=5)
-
-#VOLUME PERCENTAGE
 volpercentFrame = Frame(controlFRAME, height=20, width=100)
 volpercentFrame.place(x=60,y=46)
 vLabel = Label(volpercentFrame, text='Volume:',fg=textColor)
 vLabel.place(x=0, y=0)
 vLabelpercent = Label(volpercentFrame, text='75%', fg=textColor)
 vLabelpercent.place(x=50, y=0)
-
-
-#VOLUME SLIDER
 volsliderFrame = Frame(controlFRAME, height=21, width=250, bg=leftFrameColor)
 volsliderFrame.place(x=375, y=45)
 volumeSlider = ttk.Scale(volsliderFrame, from_=0, to=1, orient=HORIZONTAL, value=0.75,length=158, command=volume)
